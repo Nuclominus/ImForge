@@ -1,0 +1,71 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+tasks.register("sourceJar", Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier.set('sources')
+}
+
+Properties localProps = new Properties()
+File localProperties = new File(rootProject.rootDir, "local.properties")
+if (localProperties.exists() && localProperties.isFile()) {
+    localProperties.withInputStream { localProps.load(it) }
+}
+
+project.ext["signing.keyId"] = localProps.getProperty("signing.keyId")
+project.ext["signing.secretKeyRingFile"] = localProps.getProperty("signing.secretKeyRingFile")
+project.ext["signing.password"] = localProps.getProperty("signing.password")
+
+afterEvaluate {
+    publishing {
+        publications {
+            releaseAar(MavenPublication) {
+                from components.release
+                artifact sourceJar
+
+                groupId = "io.github.nuclominus"
+                artifactId = "imagecompressor"
+                version = "1.0.0"
+
+                pom {
+                    name = 'Image Compressor'
+                    description = 'A simple compressing bitmap in popular formats'
+                    url = 'https://github.com/Nuclominus/BitmapCompressor'
+
+                    licenses {
+                        license {
+                            name = 'The MIT License'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'nuclominus'
+                            name = 'Roman Kosko'
+                            email = '9DGRoman@gmail.com'
+                        }
+                    }
+
+                    scm {
+                        url = 'https://github.com/Nuclominus/BitmapCompressor'
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "sonatypeStaging"
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = localProps.getProperty("ossrhUsername")
+                    password = localProps.getProperty("ossrhPassword")
+                }
+            }
+        }
+    }
+
+    signing {
+        sign(publishing.publications)
+    }
+}
