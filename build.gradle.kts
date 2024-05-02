@@ -8,6 +8,7 @@ plugins {
 buildscript {
     dependencies {
         classpath(libs.android.gradle.plugin)
+        classpath(libs.hilt.gradle.plugin)
     }
 }
 

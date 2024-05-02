@@ -1,37 +1,49 @@
 package io.github.nuclominus.example
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
-import io.github.nuclominus.example.flow.ImageOptimizerFlow
-import io.github.nuclominus.example.state.ImageOptimizingState
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import io.github.nuclominus.example.ext.deleteLocalCache
 import io.github.nuclominus.example.ui.theme.ImageCompressorTheme
 import io.github.nuclominus.example.ui.widget.ImageIdleWidget
 import io.github.nuclominus.example.ui.widget.ImageProcessingWidget
+import io.github.nuclominus.example.viewmodel.ImageOptimizingScreen
+import io.github.nuclominus.example.viewmodel.ListViewModel
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val optimizerFlow = ImageOptimizerFlow()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(optimizerFlow)
+        deleteLocalCache()
 
         setContent {
             ImageCompressorTheme {
-
-                val state by optimizerFlow.imageState.collectAsState()
-
                 // A surface container using the 'background' color from the theme
-                ImageComparingWidget(state) {
-                    optimizerFlow.pickImage()
+                val navController = rememberNavController()
+
+                BackHandler(true) {
+                    if (navController.backQueue.isEmpty()) {
+                        finish()
+                    } else {
+                        navController.popBackStack()
+                    }
                 }
+
+                ImageComparingWidget(navController = navController)
             }
         }
     }
@@ -39,26 +51,29 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BoxScope.ImageComparingWidget(
-    state: ImageOptimizingState = ImageOptimizingState.Idle,
-    pickAction: () -> Unit
+    viewModel: ListViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
-    when (state) {
-        is ImageOptimizingState.Error -> {
-            // show error message
-            Toast.makeText(
-                LocalContext.current,
-                state.message,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    Navigation(navController = navController)
 
-        is ImageOptimizingState.Idle -> {
-            // show idle state
-            ImageIdleWidget(pickAction)
-        }
+    val screen by viewModel.imageState.collectAsState()
+    navController.navigate(screen.route.routeName)
+}
 
-        else -> {
-            ImageProcessingWidget(state)
+@Composable
+fun BoxScope.Navigation(
+    navController: NavHostController
+) {
+    NavHost(
+        modifier = Modifier.fillMaxSize(),
+        navController = navController,
+        startDestination = ImageOptimizingScreen.IDLE.routeName,
+    ) {
+        composable(ImageOptimizingScreen.IDLE.routeName) {
+            ImageIdleWidget()
+        }
+        composable(ImageOptimizingScreen.SUCCESS.routeName) {
+            ImageProcessingWidget()
         }
     }
 }

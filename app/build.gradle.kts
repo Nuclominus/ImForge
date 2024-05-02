@@ -21,7 +21,7 @@ dependencies {
     implementation(libs.activity.compose)
 
     implementation(libs.bundles.androidx.hilt)
-    ksp(libs.androidx.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
