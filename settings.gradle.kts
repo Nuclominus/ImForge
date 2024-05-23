@@ -4,6 +4,7 @@ rootProject.name = "ImageCompressor"
 
 pluginManagement {
     includeBuild("build-logic")
+    gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
     repositories {
         google()
         mavenCentral()

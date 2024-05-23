@@ -1,5 +1,6 @@
 import com.android.build.gradle.LibraryExtension
-import core.configureKotlinAndroid
+import core.configureAndroidLibrary
+import core.configureKotlin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -14,17 +15,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<LibraryExtension> {
-                configureKotlinAndroid(this)
-
-                defaultConfig.apply {
-                    targetSdk = 34
-
-                    buildFeatures {
-                        buildConfig = false
-                        dataBinding = false
-                        viewBinding = false
-                    }
-                }
+                configureAndroidLibrary()
+                configureKotlin()
             }
         }
     }

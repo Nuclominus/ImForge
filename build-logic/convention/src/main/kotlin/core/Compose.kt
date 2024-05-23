@@ -2,54 +2,39 @@
 
 package core
 
-import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.ApplicationExtension
+import ext.Configurations
+import ext.addBundle
+import ext.addLibrary
+import ext.addPlatform
+import ext.versionCatalog
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
-import java.io.File
 
 /**
  * Configure Compose-specific options
  */
-internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = "1.5.12"
-        }
-
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
-        }
-    }
-}
-
-private fun Project.buildComposeMetricsParameters(): List<String> {
-    val metricParameters = mutableListOf<String>()
-    val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")
-    val enableMetrics = (enableMetricsProvider.orNull == "true")
-    if (enableMetrics) {
-        val metricsFolder = File(project.buildDir, "compose-metrics")
-        metricParameters.add("-P")
-        metricParameters.add(
-            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" + metricsFolder.absolutePath
-        )
+internal fun Project.configureCompose() = extensions.getByType<ApplicationExtension>().apply {
+    buildFeatures {
+        compose = true
     }
 
-    val enableReportsProvider = project.providers.gradleProperty("enableComposeCompilerReports")
-    val enableReports = (enableReportsProvider.orNull == "true")
-    if (enableReports) {
-        val reportsFolder = File(project.buildDir, "compose-reports")
-        metricParameters.add("-P")
-        metricParameters.add(
-            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" + reportsFolder.absolutePath
-        )
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14" // TODO: remove when integrate K2
     }
-    return metricParameters.toList()
+
+    dependencies {
+        // Compose dependencies
+//        addLibrary(versionCatalog(), "compose-compiler")
+        addPlatform(versionCatalog(), "compose-bom")
+        addBundle(versionCatalog(), "compose")
+
+        // Test dependencies
+        addPlatform(versionCatalog(), "compose-bom", Configurations.TestImplementation)
+        addLibrary(versionCatalog(), "compose-ui-test-junit4", Configurations.TestImplementation)
+        addLibrary(versionCatalog(), "compose-ui-tooling", Configurations.DebugImplementation)
+        addLibrary(versionCatalog(), "compose-ui-test-manifest", Configurations.DebugImplementation)
+
+    }
 }

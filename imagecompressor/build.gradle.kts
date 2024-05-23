@@ -1,3 +1,5 @@
+import data.LibConf
+import data.MavenConf
 import java.util.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
@@ -7,16 +9,6 @@ plugins {
     `maven-publish`
     signing
 }
-
-android {
-    namespace = "io.github.nuclominus.imforge"
-}
-
-dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.androidx.exifinterface)
-}
-
 
 val sourcesJar by tasks.registering(Jar::class) {
     from(android.sourceSets["main"].java.srcDirs)
@@ -35,41 +27,37 @@ project.extra["signing.password"] = localProps.getProperty("signing.password")
 
 afterEvaluate {
 
-    val groupId by extra { "io.github.nuclominus" }
-    val artifactId by extra { "imforge" }
-    val version by extra { "1.0.2" }
-
     publishing {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
                 artifact(sourcesJar)
 
-                this.groupId = groupId
-                this.artifactId = artifactId
-                this.version = version
+                this.groupId = MavenConf.GROUP_ID
+                this.artifactId = MavenConf.ARTIFACT_ID
+                this.version = LibConf.LIB_VERSION
 
                 pom {
-                    name.set("ImForge")
-                    description.set("A bitmap optimizer with supporting popular formats")
-                    url.set("https://github.com/Nuclominus/ImForge")
+                    name.set(MavenConf.ARTIFACT_NAME)
+                    description.set(MavenConf.DESCRIPTION)
+                    url.set(MavenConf.URL)
 
                     licenses {
                         license {
-                            name.set("The MIT License")
+                            name.set(MavenConf.LICENSE_NAME)
                         }
                     }
 
                     developers {
                         developer {
-                            id.set("nuclominus")
-                            name.set("Roman Kosko")
-                            email.set("9DGRoman@gmail.com")
+                            id.set(MavenConf.DEVELOPER_ID)
+                            name.set(MavenConf.DEVELOPER_NAME)
+                            email.set(MavenConf.DEVELOPER_EMAIL)
                         }
                     }
 
                     scm {
-                        url.set("https://github.com/Nuclominus/ImForge")
+                        url.set(MavenConf.SCM_URL)
                     }
                 }
             }
@@ -77,11 +65,11 @@ afterEvaluate {
 
         repositories {
             maven {
-                name = "sonatypeStaging"
-                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                name = MavenConf.MAVEN_NAME
+                url = uri(MavenConf.MAVEN_URL)
                 credentials {
-                    username = localProps.getProperty("ossrhUsername")
-                    password = localProps.getProperty("ossrhPassword")
+                    username = localProps.getProperty(MavenConf.OSSRH_USERNAME)
+                    password = localProps.getProperty(MavenConf.OSSRH_PASSWORD)
                 }
             }
         }

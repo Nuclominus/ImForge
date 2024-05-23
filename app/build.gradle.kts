@@ -5,38 +5,53 @@ plugins {
 }
 
 android {
-    namespace = "io.github.nuclominus.example"
 
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+    defaultConfig {
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+            arg("room.incremental", "true")
+        }
+    }
+
+    buildTypes {
+        val release by getting {
+            isMinifyEnabled = true
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+                "dexguard-release.txt",
+            )
+            setProperty("archivesBaseName", "ImForge")
+        }
+
+        val debug by getting {
+            isMinifyEnabled = false
+            isDebuggable = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+                "dexguard-release.txt",
+            )
+            setProperty("archivesBaseName", "ImForge")
         }
     }
 }
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
+//    implementation(libs.core.ktx)
+//    implementation(libs.lifecycle.runtime.ktx)
+//    implementation(libs.activity.compose)
 
-    implementation(libs.bundles.androidx.hilt)
-    ksp(libs.hilt.compiler)
+//    implementation(libs.bundles.hilt)
+//    ksp(libs.hilt.compiler)
+//    ksp(libs.hilt.android.compiler)
+//
+//    implementation(libs.androidx.room)
+//    ksp(libs.androidx.room.compiler)
+//    implementation(libs.androidx.room.ktx)
 
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose)
-
-    implementation(libs.androidx.work)
-
-    implementation(libs.androidx.room)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
-
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
-
-    implementation(libs.image.glide.compose)
     implementation(libs.nuclominus.imforge)
 }

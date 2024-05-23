@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
+import androidx.annotation.RestrictTo
 import androidx.exifinterface.media.ExifInterface
 import java.io.File
 import java.io.FileOutputStream
@@ -24,6 +25,7 @@ object ImageOptimizer {
      *
      * @return output image [android.net.Uri]
      */
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     fun optimize(
         context: Context,
         imageUri: Uri,
@@ -305,6 +307,7 @@ object ImageOptimizer {
             when (compressFormat) {
                 Bitmap.CompressFormat.WEBP_LOSSY,
                 Bitmap.CompressFormat.WEBP_LOSSLESS -> ".webp"
+
                 Bitmap.CompressFormat.PNG -> ".png"
                 else -> ".jpg"
             }

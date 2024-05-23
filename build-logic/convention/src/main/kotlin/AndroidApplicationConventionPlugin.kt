@@ -1,8 +1,13 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.android.build.api.dsl.ApplicationExtension
-import core.configureAndroidCompose
-import core.configureKotlinAndroid
+import core.Flavors
+import core.configureAndroidApplication
+import core.configureCompose
+import core.configureDevFlavor
+import core.configureFlavors
+import core.configureKotlin
+import core.configureProdFlavor
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -20,19 +25,14 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
-                configureAndroidCompose(this)
+                configureAndroidApplication()
+                configureKotlin()
+                configureCompose()
 
-                defaultConfig.apply {
-                    targetSdk = 34
-                    multiDexEnabled = true
-
-                    buildFeatures {
-                        aidl = false
-                        buildConfig = false
-                        dataBinding = false
-                        viewBinding = false
-                        prefab = false
+                configureFlavors(this) { flavor ->
+                    when (flavor.name) {
+                        Flavors.development.name -> configureDevFlavor()
+                        Flavors.production.name -> configureProdFlavor()
                     }
                 }
             }
