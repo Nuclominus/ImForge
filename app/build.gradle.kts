@@ -40,18 +40,5 @@ android {
 }
 
 dependencies {
-
-//    implementation(libs.core.ktx)
-//    implementation(libs.lifecycle.runtime.ktx)
-//    implementation(libs.activity.compose)
-
-//    implementation(libs.bundles.hilt)
-//    ksp(libs.hilt.compiler)
-//    ksp(libs.hilt.android.compiler)
-//
-//    implementation(libs.androidx.room)
-//    ksp(libs.androidx.room.compiler)
-//    implementation(libs.androidx.room.ktx)
-
     implementation(libs.nuclominus.imforge)
 }

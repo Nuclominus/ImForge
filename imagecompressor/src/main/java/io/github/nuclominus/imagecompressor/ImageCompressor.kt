@@ -14,9 +14,10 @@ import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
 
-object ImageOptimizer {
+private const val DEFAULT_QUALITY = 90
 
-    private const val DEFAULT_QUALITY = 90
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+internal object ImageOptimizer {
 
     /**
      * @param context the application environment
@@ -325,23 +326,23 @@ object ImageOptimizer {
         bitmap.recycle()
         return imageFile.absolutePath
     }
-
-    /**
-     * @param compressFormat the output image file format
-     * @param maxWidth the output image max width
-     * @param maxHeight the output image max height
-     * @param useMaxScale determine whether to use the bigger dimension between [maxWidth] or [maxHeight]
-     * @param quality the output image compress quality
-     * @param minWidth the output image min width
-     * @param minHeight the output image min height
-     */
-    data class Configuration(
-        val compressFormat: Bitmap.CompressFormat = @Suppress("DEPRECATION") Bitmap.CompressFormat.WEBP,
-        val maxWidth: Float = Float.MAX_VALUE,
-        val maxHeight: Float = Float.MAX_VALUE,
-        val useMaxScale: Boolean = true,
-        val quality: Int = DEFAULT_QUALITY,
-        val minWidth: Int = Int.MIN_VALUE,
-        val minHeight: Int = Int.MIN_VALUE
-    )
 }
+
+/**
+ * @param compressFormat the output image file format
+ * @param maxWidth the output image max width
+ * @param maxHeight the output image max height
+ * @param useMaxScale determine whether to use the bigger dimension between [maxWidth] or [maxHeight]
+ * @param quality the output image compress quality
+ * @param minWidth the output image min width
+ * @param minHeight the output image min height
+ */
+data class Configuration(
+    val compressFormat: Bitmap.CompressFormat = @Suppress("DEPRECATION") Bitmap.CompressFormat.WEBP,
+    val maxWidth: Float = Float.MAX_VALUE,
+    val maxHeight: Float = Float.MAX_VALUE,
+    val useMaxScale: Boolean = true,
+    val quality: Int = DEFAULT_QUALITY,
+    val minWidth: Int = Int.MIN_VALUE,
+    val minHeight: Int = Int.MIN_VALUE
+)

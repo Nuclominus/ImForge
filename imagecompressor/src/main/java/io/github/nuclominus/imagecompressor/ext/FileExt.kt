@@ -2,6 +2,7 @@ package io.github.nuclominus.imagecompressor.ext
 
 import android.content.Context
 import androidx.core.net.toUri
+import io.github.nuclominus.imagecompressor.Configuration
 import io.github.nuclominus.imagecompressor.ImageOptimizer
 import java.io.File
 
@@ -15,7 +16,7 @@ import java.io.File
  */
 fun File.optimize(
     context: Context,
-    configuration: ImageOptimizer.Configuration = ImageOptimizer.Configuration(),
+    configuration: Configuration = Configuration(),
     flip: Boolean = false,
 ): File =
     ImageOptimizer.optimize(

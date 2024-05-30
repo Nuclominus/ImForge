@@ -16,17 +16,15 @@ import org.gradle.kotlin.dsl.getByType
  * Configure Compose-specific options
  */
 internal fun Project.configureCompose() = extensions.getByType<ApplicationExtension>().apply {
+
+    pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+
     buildFeatures {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14" // TODO: remove when integrate K2
-    }
-
     dependencies {
         // Compose dependencies
-//        addLibrary(versionCatalog(), "compose-compiler")
         addPlatform(versionCatalog(), "compose-bom")
         addBundle(versionCatalog(), "compose")
 
