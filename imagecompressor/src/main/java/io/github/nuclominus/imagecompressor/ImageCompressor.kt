@@ -5,6 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RestrictTo
 import androidx.exifinterface.media.ExifInterface
 import java.io.File
 import java.io.FileOutputStream
@@ -12,11 +14,10 @@ import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
 
-object ImageOptimizer {
+private const val DEFAULT_QUALITY = 90
 
-    const val DEFAULT_MAX_PHOTO_SIZE = 1280f
-    private const val DEFAULT_MIN_PHOTO_SIZE = 100
-    private const val DEFAULT_QUALITY = 90
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+internal object ImageOptimizer {
 
     /**
      * @param context the application environment
@@ -25,6 +26,7 @@ object ImageOptimizer {
      *
      * @return output image [android.net.Uri]
      */
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     fun optimize(
         context: Context,
         imageUri: Uri,
@@ -301,10 +303,21 @@ object ImageOptimizer {
         compressFormat: Bitmap.CompressFormat,
         quality: Int,
     ): String? {
-        val suffix = when (compressFormat) {
-            Bitmap.CompressFormat.WEBP -> ".webp"
-            Bitmap.CompressFormat.PNG -> ".png"
-            else -> ".jpg"
+        @Suppress("DEPRECATION")
+        val suffix = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            when (compressFormat) {
+                Bitmap.CompressFormat.WEBP_LOSSY,
+                Bitmap.CompressFormat.WEBP_LOSSLESS -> ".webp"
+
+                Bitmap.CompressFormat.PNG -> ".png"
+                else -> ".jpg"
+            }
+        } else {
+            when (compressFormat) {
+                Bitmap.CompressFormat.WEBP -> ".webp"
+                Bitmap.CompressFormat.PNG -> ".png"
+                else -> ".jpg"
+            }
         }
         val imageFile = File.createTempFile("image", suffix)
         val stream = FileOutputStream(imageFile)
@@ -313,23 +326,23 @@ object ImageOptimizer {
         bitmap.recycle()
         return imageFile.absolutePath
     }
-
-    /**
-     * @param compressFormat the output image file format
-     * @param maxWidth the output image max width
-     * @param maxHeight the output image max height
-     * @param useMaxScale determine whether to use the bigger dimension between [maxWidth] or [maxHeight]
-     * @param quality the output image compress quality
-     * @param minWidth the output image min width
-     * @param minHeight the output image min height
-     */
-    data class Configuration(
-        val compressFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.WEBP,
-        val maxWidth: Float = DEFAULT_MAX_PHOTO_SIZE,
-        val maxHeight: Float = DEFAULT_MAX_PHOTO_SIZE,
-        val useMaxScale: Boolean = true,
-        val quality: Int = DEFAULT_QUALITY,
-        val minWidth: Int = DEFAULT_MIN_PHOTO_SIZE,
-        val minHeight: Int = DEFAULT_MIN_PHOTO_SIZE
-    )
 }
+
+/**
+ * @param compressFormat the output image file format
+ * @param maxWidth the output image max width
+ * @param maxHeight the output image max height
+ * @param useMaxScale determine whether to use the bigger dimension between [maxWidth] or [maxHeight]
+ * @param quality the output image compress quality
+ * @param minWidth the output image min width
+ * @param minHeight the output image min height
+ */
+data class Configuration(
+    val compressFormat: Bitmap.CompressFormat = @Suppress("DEPRECATION") Bitmap.CompressFormat.WEBP,
+    val maxWidth: Float = Float.MAX_VALUE,
+    val maxHeight: Float = Float.MAX_VALUE,
+    val useMaxScale: Boolean = true,
+    val quality: Int = DEFAULT_QUALITY,
+    val minWidth: Int = Int.MIN_VALUE,
+    val minHeight: Int = Int.MIN_VALUE
+)

@@ -1,16 +1,19 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    alias(libs.plugins.kotlinAndroid) apply false
+//    alias(libs.plugins.kotlin.compose.compiler) apply false // TODO migrate to new plugin when available
+    alias(libs.plugins.google.ksp) apply false
+    alias(libs.plugins.hilt.plugin) apply false
+    alias(libs.plugins.compose.compiler) apply false
+}
+
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
+    dependencies {
+        classpath(libs.android.gradle.plugin)
+        classpath(libs.hilt.gradle.plugin)
     }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.androidApplication) apply false
-    alias(libs.plugins.kotlinAndroid) apply false
-    alias(libs.plugins.androidLibrary) apply false
-    `maven-publish`
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
 }
-true // Needed to make the Suppress annotation work for the plugins block

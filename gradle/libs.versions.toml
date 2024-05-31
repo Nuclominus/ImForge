@@ -1,37 +1,83 @@
 [versions]
-agp = "8.3.0-alpha04"
-kotlin = "1.9.0"
-core-ktx = "1.12.0"
-junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
-espresso-core = "3.5.1"
-lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.7.2"
-compose-bom = "2023.09.00"
-appcompat = "1.6.1"
-material = "1.9.0"
-exifInterface = "1.3.6"
+activity-compose = "1.9.0"
+agp = "8.4.1"
+compose-bom = "2024.05.00"
+core-ktx = "1.13.1"
+detektAnalyzer = "1.23.5"
+exifInterface = "1.3.7"
+imforge = "1.0.2"
+kotlin = "2.0.0"
+ksp = "2.0.0-1.0.21"
+lifecycle = "2.7.0"
+composeState = "1.6.7"
+hilt = "2.50"
+androidxHilt = "1.2.0"
+multidex = "2.0.1"
+workmanager = "2.9.0"
+room = "2.6.1"
+gson = "2.10.1"
+material3 = "1.2.1"
 
 [libraries]
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-ui = { group = "androidx.compose.ui", name = "ui" }
-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-material3 = { group = "androidx.compose.material3", name = "material3" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+android-gradle-plugin = { module = "com.android.tools.build:gradle", name = "gradle-plugin", version.ref = "agp" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifInterface" }
+compose-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
+androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workmanager" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "composeState" }
+detekt-gradle-plugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detektAnalyzer" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "androidxHilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHilt" }
+hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "androidxHilt" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+material3-compose = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+nuclominus-imforge = { group = "io.github.nuclominus", name = "imforge", version.ref = "imforge" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+[bundles]
+androidx = [
+    "androidx-core-ktx",
+    "androidx-exifinterface",
+    "androidx-multidex",
+    "androidx-work",
+    "androidx-room",
+    "androidx-room-ktx",
+    "androidx-lifecycle-runtime-ktx",
+]
+hilt = [
+    "hilt-android",
+    "hilt-navigation-compose",
+    "hilt-work",
+]
+compose = [
+    "compose-ui",
+    "compose-ui-graphics",
+    "compose-ui-tooling-preview",
+    "compose-lifecycle",
+    "material3-compose",
+    "compose-activity",
+    "compose-livedata",
+]
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
+detekt-analyzer = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektAnalyzer" }
+hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
