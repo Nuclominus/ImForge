@@ -1,0 +1,38 @@
+name: Code Analyzing
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  detekt_analyzer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 19
+          cache: 'gradle'
+
+      - name: 'Run Detekt Sample Analyzer'
+        run: ./gradlew --no-daemon :sample:detekt
+
+      - name: 'Run Detekt Library Analyzer'
+        run: ./gradlew --no-daemon :lib:detekt
+
+  code_build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 19
+          cache: 'gradle'
+
+      - name: 'Run code build'
+        run: ./gradlew --no-daemon :lib:assembleRelease

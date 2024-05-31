@@ -30,6 +30,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
+private const val LIST_SCROLL_OFFSET = 5
+
 @Composable
 fun DashboardScreen(navigateToDetails: (String) -> Unit) {
 
@@ -88,7 +90,7 @@ fun DashboardScreen(navigateToDetails: (String) -> Unit) {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 is SideEffect.ScrollTo -> coroutineScope.launch {
-                    listState.animateScrollToItem(sideEffect.position, 5)
+                    listState.animateScrollToItem(sideEffect.position, LIST_SCROLL_OFFSET)
                 }
 
                 else -> Unit

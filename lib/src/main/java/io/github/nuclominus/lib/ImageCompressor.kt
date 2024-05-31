@@ -1,4 +1,4 @@
-package io.github.nuclominus.imagecompressor
+package io.github.nuclominus.lib
 
 import android.content.Context
 import android.graphics.Bitmap

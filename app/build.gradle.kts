@@ -1,3 +1,7 @@
+import com.android.aaptcompiler.shouldIgnoreElement
+import com.android.build.gradle.internal.packaging.defaultExcludes
+import javax.xml.namespace.QName
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("io.nuclominus.android.application")
@@ -35,6 +39,15 @@ android {
                 "dexguard-release.txt",
             )
             setProperty("archivesBaseName", "ImForge")
+        }
+    }
+
+    detekt {
+        source.setFrom("src/main/java")
+        config.setFrom("../config/detekt/detekt.yaml")
+        buildUponDefaultConfig = true
+        tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+            exclude("**/theme/**/*.kt")
         }
     }
 }

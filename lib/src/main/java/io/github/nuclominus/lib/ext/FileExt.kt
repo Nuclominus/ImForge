@@ -1,9 +1,9 @@
-package io.github.nuclominus.imagecompressor.ext
+package io.github.nuclominus.lib.ext
 
 import android.content.Context
 import androidx.core.net.toUri
-import io.github.nuclominus.imagecompressor.Configuration
-import io.github.nuclominus.imagecompressor.ImageOptimizer
+import io.github.nuclominus.lib.Configuration
+import io.github.nuclominus.lib.ImageOptimizer
 import java.io.File
 
 /**

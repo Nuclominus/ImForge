@@ -10,6 +10,18 @@ plugins {
     signing
 }
 
+detekt {
+    source.setFrom("src/main/kotlin")
+    // preconfigure defaults
+    buildUponDefaultConfig = true
+    // activate all available (even unstable) rules
+    allRules = false
+    // point to your custom config defining rules to run, overwriting default behavior
+    config.setFrom("$rootDir/config/detekt/detekt.yml")
+    // a way of suppressing issues before introducing detekt
+    baseline = file("$projectDir/config/baseline.xml")
+}
+
 val sourcesJar by tasks.registering(Jar::class) {
     from(android.sourceSets["main"].java.srcDirs)
     archiveClassifier.set("sourcesJar")
@@ -21,9 +33,9 @@ if (localProperties.exists() && localProperties.isFile) {
     localProperties.inputStream().use { localProps.load(it) }
 }
 
-project.extra["signing.keyId"] = localProps.getProperty("signing.keyId")
-project.extra["signing.secretKeyRingFile"] = localProps.getProperty("signing.secretKeyRingFile")
-project.extra["signing.password"] = localProps.getProperty("signing.password")
+project.ext["signing.keyId"] = System.getenv("SIGN_KEY_ID")
+project.ext["signing.secretKeyRingFile"] = System.getenv("SIGN_KEY")
+project.ext["signing.password"] = System.getenv("SIGN_KEY_PASS")
 
 afterEvaluate {
 
