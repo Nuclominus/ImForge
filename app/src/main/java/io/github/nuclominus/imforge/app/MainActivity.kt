@@ -64,9 +64,7 @@ fun Navigation(
     navController: NavHostController
 ) {
     NavHost(
-        modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
+        modifier = Modifier.fillMaxSize(),
         navController = navController,
         startDestination = ImageOptimizingScreen.LIST.routeName,
     ) {

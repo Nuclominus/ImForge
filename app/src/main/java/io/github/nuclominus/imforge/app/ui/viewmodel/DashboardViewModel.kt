@@ -27,7 +27,6 @@ class DashboardViewModel @Inject constructor(
     imageListUseCase: GetImageListUseCase,
     private val optimizeImageUseCase: OptimizeImageUseCase,
     private val deleteImageCacheUseCase: DeleteImageCacheUseCase,
-    private val getWorkInfoUseCase: GetWorkInfoUseCase
 ) : ViewModel() {
 
     private val _sideEffect = MutableSharedFlow<SideEffect?>(
