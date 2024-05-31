@@ -30,8 +30,8 @@ object MavenConf {
     const val SCM_URL: String = "https://github.com/Nuclominus/ImForge"
     const val MAVEN_NAME: String = "sonatypeStaging"
     const val MAVEN_URL: String = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-    const val OSSRH_USERNAME: String = "ossrhUsername"
-    const val OSSRH_PASSWORD: String = "ossrhPassword"
+    const val OSS_USERNAME: String = "OSS_USERNAME"
+    const val OSS_PASSWORD: String = "OSS_PASSWORD"
 }
 
 
