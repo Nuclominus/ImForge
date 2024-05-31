@@ -80,8 +80,8 @@ afterEvaluate {
                 name = MavenConf.MAVEN_NAME
                 url = uri(MavenConf.MAVEN_URL)
                 credentials {
-                    username = localProps.getProperty(MavenConf.OSSRH_USERNAME)
-                    password = localProps.getProperty(MavenConf.OSSRH_PASSWORD)
+                    username = System.getenv(MavenConf.OSSRH_USERNAME)
+                    password = System.getenv(MavenConf.OSSRH_PASSWORD)
                 }
             }
         }
