@@ -18,7 +18,7 @@ jobs:
           cache: 'gradle'
 
       - name: 'Run Detekt Sample Analyzer'
-        run: ./gradlew --no-daemon :sample:detekt
+        run: ./gradlew --no-daemon :app:detekt
 
       - name: 'Run Detekt Library Analyzer'
         run: ./gradlew --no-daemon :lib:detekt

@@ -2,7 +2,7 @@ name: Git Release
 on:
   push:
     tags:
-      - "release-v*.*.*"
+      - "git-v*.*.*"
 
 jobs:
   build:
