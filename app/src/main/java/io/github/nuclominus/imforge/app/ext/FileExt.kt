@@ -11,6 +11,7 @@ import io.github.nuclominus.imforge.app.FileConstants
 import io.github.nuclominus.imagecompressor.ImageOptimizer
 import io.github.nuclominus.imagecompressor.ext.optimize
 import java.io.File
+import java.util.Locale
 
 internal fun Context.createThumbnail(original: File): File {
     val thumb = original.optimize(
@@ -66,4 +67,15 @@ internal fun Context.copyFile(uri: Uri): File? {
     }
 
     return null
+}
+
+internal fun Long.formatSize(): String {
+    if (this < 1024) return "$this B"
+    val z = (63 - countLeadingZeroBits()) / 10
+    return String.format(
+        Locale.getDefault(),
+        "%.1f %sB",
+        this.toDouble() / (1L shl (z * 10).coerceAtLeast(1)),
+        " KMGTPE"[z]
+    )
 }

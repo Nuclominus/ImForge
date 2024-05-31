@@ -14,8 +14,6 @@ import io.github.nuclominus.imforge.app.core.database.entity.ImageDetailsEntity
 
 @Composable
 fun ImageListItem(details: ImageDetailsEntity, onClick: () -> Unit) {
-//    val workInfo by model.workInfo.observeAsState()
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,15 +27,7 @@ fun ImageListItem(details: ImageDetailsEntity, onClick: () -> Unit) {
             details = details
         ) {
             Tag(title = "${details.compression}%")
-            Tag(title = details.mimeType)
+            Tag(title = details.mimeType.uppercase())
         }
-
-        // No sense, cause the work end to fast. But it's just for example
-        // Show progress indicator if the work is running
-//        if (workInfo?.state == WorkInfo.State.RUNNING) {
-//            CircularProgressIndicator(
-//                color = Color.White
-//            )
-//        }
     }
 }
