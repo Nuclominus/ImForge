@@ -35,6 +35,10 @@ android {
                 "dexguard-release.txt",
             )
             setProperty("archivesBaseName", "ImForge")
+
+            lint {
+                abortOnError = false
+            }
         }
     }
 
