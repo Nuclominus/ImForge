@@ -11,9 +11,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 19
+
+      - name: Setup JDK
         uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
+          cache: gradle
           java-version: 19
 
       - name: Build
