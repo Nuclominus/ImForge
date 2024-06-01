@@ -36,9 +36,9 @@ android {
             )
             setProperty("archivesBaseName", "ImForge")
 
-//            lint {
-//                abortOnError = false
-//            }
+            lint {
+                abortOnError = false
+            }
         }
     }
 
