@@ -29,10 +29,10 @@ jobs:
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/bundle/productionRelease
-          signingKeyBase64: ${{ secrets.KEY_STORE }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          signingKeyBase64: ${{ secrets.APP_KEY_STORE }}
+          alias: ${{ secrets.APP_ALIAS }}
+          keyStorePassword: ${{ secrets.APP_KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.APP_KEY_PASSWORD }}
 
 #      - name: Tag Release
 #        run: |
