@@ -1,4 +1,4 @@
-name: (PR) Maven Publish Release
+name: (Tag) Maven Publish Release
 
 on:
   push:

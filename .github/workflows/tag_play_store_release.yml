@@ -1,9 +1,9 @@
-name: Deploy to Alpha
+name: (Tag) Deploy to Alpha
 
 on:
   push:
-    branches:
-      - release/
+    tags:
+      - "release-v*.*.*"
 
 jobs:
   deploy:
