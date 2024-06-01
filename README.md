@@ -1,1 +1,1 @@
-# BitmapCompressor
+# ImForge
