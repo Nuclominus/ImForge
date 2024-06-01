@@ -40,27 +40,23 @@ object NotificationManager {
     }
 
     private fun createNotificationChannel(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channel = NotificationChannel(
+            NotificationConstants.CHANNEL_ID,
+            NotificationConstants.CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = NotificationConstants.CHANNEL_DESCRIPTION
+            enableLights(true)
+            val att = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build()
+            setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), att)
+            enableVibration(true)
+        }
 
-            val channel = NotificationChannel(
-                NotificationConstants.CHANNEL_ID,
-                NotificationConstants.CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = NotificationConstants.CHANNEL_DESCRIPTION
-                enableLights(true)
-                val att = AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                    .build()
-                setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), att)
-                enableVibration(true)
-            }
-
-            with(NotificationManagerCompat.from(context)) {
-                createNotificationChannel(channel)
-            }
+        with(NotificationManagerCompat.from(context)) {
+            createNotificationChannel(channel)
         }
     }
-
 }
