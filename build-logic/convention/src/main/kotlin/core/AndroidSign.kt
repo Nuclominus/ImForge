@@ -2,9 +2,6 @@ package core
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
-import java.io.File
-import java.io.FileInputStream
-import java.util.Properties
 
 /**
  * Configure project signing
@@ -15,18 +12,12 @@ internal fun Project.configureSigningAndroid(
     commonExtension.apply {
 
         signingConfigs {
-            val keystoreProperties = projectDir.getProps("/keystore.properties")
-
             create("release") {
-                keyAlias = keystoreProperties.getProperty("keyAlias")
-                keyPassword = keystoreProperties.getProperty("keyPassword")
-                storeFile = file(keystoreProperties.getProperty("keyStoreFile"))
-                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = System.getenv("ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+                storeFile = file(System.getenv("SIGNING_KEY"))
+                storePassword = System.getenv("KEY_STORE_PASSWORD")
             }
         }
     }
-}
-
-private fun File.getProps(filePath: String) = Properties().apply {
-    load(FileInputStream(File(parent + filePath)))
 }

@@ -1,6 +1,5 @@
 import data.LibConf
 import data.MavenConf
-import java.util.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -25,12 +24,6 @@ detekt {
 val sourcesJar by tasks.registering(Jar::class) {
     from(android.sourceSets["main"].java.srcDirs)
     archiveClassifier.set("sourcesJar")
-}
-
-val localProps = Properties()
-val localProperties = File(rootProject.rootDir, "local.properties")
-if (localProperties.exists() && localProperties.isFile) {
-    localProperties.inputStream().use { localProps.load(it) }
 }
 
 project.ext["signing.keyId"] = System.getenv("SIGN_KEY_ID")
