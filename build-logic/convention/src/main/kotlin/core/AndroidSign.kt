@@ -2,10 +2,14 @@ package core
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
+import java.io.File
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 /**
  * Configure project signing
  */
+@OptIn(ExperimentalEncodingApi::class)
 internal fun Project.configureSigningAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
@@ -13,10 +17,15 @@ internal fun Project.configureSigningAndroid(
 
         signingConfigs {
             create("release") {
-                keyAlias = System.getenv("ALIAS")
-                keyPassword = System.getenv("KEY_PASSWORD")
-                storeFile = file(System.getenv("SIGNING_KEY"))
-                storePassword = System.getenv("KEY_STORE_PASSWORD")
+                val keyStore = System.getenv("APP_KEY_STORE")
+                    ?: throw IllegalArgumentException("APP_KEY_STORE is not set")
+                val bytes = Base64.Default.decode(keyStore)
+                storeFile = file(File.createTempFile("keystore", ".jks").apply {
+                    writeBytes(bytes)
+                })
+                storePassword = System.getenv("APP_KEY_STORE_PASSWORD")
+                keyAlias = System.getenv("APP_ALIAS")
+                keyPassword = System.getenv("APP_KEY_PASSWORD")
             }
         }
     }
