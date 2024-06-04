@@ -30,7 +30,7 @@ internal fun Project.configureAndroidApplication() =
             abortOnError = true
         }
 
-        configureSigningAndroid(this)
+//        configureSigningAndroid(this)
 
         packaging {
             resources {

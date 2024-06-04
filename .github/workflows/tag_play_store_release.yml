@@ -19,6 +19,13 @@ jobs:
           cache: gradle
           java-version: 19
 
+      - name: Build
+        run: ./gradlew build
+
+      - name: Assemble Release Bundle
+        run: |
+          ./gradlew bundleRelease
+
       - name: Sign Release
         uses: r0adkll/sign-android-release@v1
         with:
@@ -27,13 +34,6 @@ jobs:
           alias: ${{ secrets.APP_ALIAS }}
           keyStorePassword: ${{ secrets.APP_KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.APP_KEY_PASSWORD }}
-
-      - name: Build
-        run: ./gradlew build
-
-      - name: Assemble Release Bundle
-        run: |
-          ./gradlew bundleRelease
 
       #      - name: Tag Release
       #        run: |
