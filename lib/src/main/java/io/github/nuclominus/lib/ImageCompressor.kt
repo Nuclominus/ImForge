@@ -20,11 +20,24 @@ private const val DEFAULT_QUALITY = 90
 internal object ImageOptimizer {
 
     /**
-     * @param context the application environment
-     * @param imageUri the input image uri. usually "content://..."
-     * @param configuration the optimisation params
+     * Optimizes an image from a given Uri based on the provided configuration.
      *
-     * @return output image [android.net.Uri]
+     * This function performs several steps to optimize the image:
+     * - Decodes the bitmap from the Uri using a content provider.
+     * - Calculates the scale factor of the bitmap relative to the maximum width and height specified in the configuration.
+     * - Adjusts the image rotation and scales the image matrix based on the remaining scale factor.
+     * - Creates a new bitmap based on the defined bitmap options and the calculated matrix.
+     * - Determines whether to scale up the image if the image width and height are below the minimum dimensions specified in the configuration.
+     * - Calculates the final scale up factor if the image needs to be scaled up.
+     * - Calculates the final width and height based on the final scale up factor.
+     * - Generates the final bitmap by scaling up if needed.
+     * - Compresses and saves the image.
+     *
+     * @param context The context in which the function is called.
+     * @param imageUri The Uri of the image to be optimized.
+     * @param configuration The configuration for the optimization process.
+     * @param flip A boolean value indicating whether to flip the image or not. Default is false.
+     * @return The optimized image file, or null if the operation failed.
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     fun optimize(
