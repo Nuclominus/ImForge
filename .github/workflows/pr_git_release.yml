@@ -1,0 +1,23 @@
+name: Git Release
+on:
+  push:
+    tags:
+      - "git-v*.*.*"
+
+jobs:
+  build:
+    permissions:
+      contents: write
+      checks: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate Changelog
+        run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false

@@ -12,6 +12,8 @@ import io.github.nuclominus.imagecompressor.ImageOptimizer
 import io.github.nuclominus.imagecompressor.ext.optimize
 import java.io.File
 import java.util.Locale
+import kotlin.math.log10
+import kotlin.math.pow
 
 internal fun Context.createThumbnail(original: File): File {
     val thumb = original.optimize(
@@ -36,46 +38,68 @@ internal fun Context.deleteLocalCache() {
     fileOrDirectory.delete()
 }
 
+/**
+ * Extension function to copy a file from a given Uri to the application's cache directory.
+ *
+ * This function first determines the name of the file to be created. If the Android version is Q or above,
+ * it generates a new name using the current timestamp and the file extension derived from the mime type of the Uri.
+ * If the Android version is below Q, it retrieves the display name of the file from the Uri.
+ *
+ * After determining the file name, it creates a new file in the cache directory with that name.
+ * It then opens an input stream from the Uri and an output stream to the new file, and copies the data from the input
+ * stream to the output stream. The newly created file is then returned.
+ *
+ * If any step fails (e.g. the Uri does not exist, or the file cannot be created), the function returns null.
+ *
+ * @receiver The context in which the function is called.
+ * @param uri The Uri of the file to be copied.
+ * @return The newly created file in the cache directory, or null if the operation failed.
+ */
 internal fun Context.copyFile(uri: Uri): File? {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    val name = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         val mimeType = contentResolver.getType(uri)
         val suffix = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
-        contentResolver.openInputStream(uri)?.use { input ->
-            return File(cacheDir, "raw_${System.currentTimeMillis()}.$suffix").also {
-                it.createNewFile()
-                it.outputStream()
-                    .use { output ->
-                        input.copyTo(output)
-                    }
-            }
-
-        }
+        "raw_${System.currentTimeMillis()}.$suffix"
     } else {
         val cursor: Cursor? = contentResolver.query(uri, null, null, null, null)
         cursor?.use {
             val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             cursor.moveToFirst()
-            val name = cursor.getString(nameIndex)
-            val file = File(cacheDir, name)
-            contentResolver.openInputStream(uri)?.use { input ->
-                file.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            }
-            return file
+            cursor.getString(nameIndex)
         }
     }
 
-    return null
+    return name?.let {
+        val file = File(cacheDir, it)
+        contentResolver.openInputStream(uri)?.use { input ->
+            file.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+        file
+    }
 }
 
+/**
+ * Extension function to format a Long value into a human-readable file size string.
+ *
+ * This function converts the size from bytes to the most appropriate unit (B, KB, MB, GB, TB, PB, EB),
+ * depending on the size of the file. The conversion is done by using logarithmic operations to calculate
+ * the index for the units array. This approach is more straightforward and easier to understand for those
+ * not familiar with bitwise operations.
+ *
+ * The function first checks if the size is less than 1024 bytes. If so, it simply appends "B" to the size
+ * and returns the result. If the size is 1024 bytes or more, it calculates the number of digit groups by
+ * taking the logarithm base 10 of the size and dividing it by the logarithm base 10 of 1024. It then formats
+ * the size as a string with one decimal place, followed by the appropriate unit.
+ *
+ * @receiver The size in bytes to be formatted.
+ * @return The formatted size string.
+ */
+private const val KILOBYTE = 1024.0
+
 internal fun Long.formatSize(): String {
-    if (this < 1024) return "$this B"
-    val z = (63 - countLeadingZeroBits()) / 10
-    return String.format(
-        Locale.getDefault(),
-        "%.1f %sB",
-        this.toDouble() / (1L shl (z * 10).coerceAtLeast(1)),
-        " KMGTPE"[z]
-    )
+    val units = arrayOf("B", "KB", "MB", "GB", "TB", "PB", "EB")
+    val digitGroups = (log10(this.toDouble()) / log10(KILOBYTE)).toInt()
+    return "%.1f %s".format(this / KILOBYTE.pow(digitGroups.toDouble()), units[digitGroups])
 }

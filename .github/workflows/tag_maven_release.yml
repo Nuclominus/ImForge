@@ -1,0 +1,39 @@
+name: (Tag) Maven Publish Release
+
+on:
+  push:
+    tags:
+      - "release-v*.*.*"
+
+jobs:
+  deploy:
+    permissions:
+      contents: read
+      checks: write
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          cache: gradle
+          java-version: 19
+
+      - name: Decode sign key
+        id: decode-key
+        run: echo "${{ secrets.SIGN_KEY }}" | base64 --decode > sign.gpg
+
+      - name: Publish All Artifacts
+        env:
+          OSS_USERNAME: ${{ secrets.OSS_USERNAME }}
+          OSS_PASSWORD: ${{ secrets.OSS_PASSWORD }}
+          SIGN_KEY_ID: ${{ secrets.SIGN_KEY_ID }}
+          SIGN_KEY_PASS: ${{ secrets.SIGN_KEY_PASS }}
+
+        run: |
+          export SIGN_KEY="$(realpath sign.gpg)"
+          ./gradlew publishAllPublicationsToSonatypeStagingRepository

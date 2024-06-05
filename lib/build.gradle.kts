@@ -1,6 +1,5 @@
 import data.LibConf
 import data.MavenConf
-import java.util.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -10,20 +9,26 @@ plugins {
     signing
 }
 
+detekt {
+    source.setFrom("src/main/kotlin")
+    // preconfigure defaults
+    buildUponDefaultConfig = true
+    // activate all available (even unstable) rules
+    allRules = false
+    // point to your custom config defining rules to run, overwriting default behavior
+    config.setFrom("$rootDir/config/detekt/detekt.yml")
+    // a way of suppressing issues before introducing detekt
+    baseline = file("$projectDir/config/baseline.xml")
+}
+
 val sourcesJar by tasks.registering(Jar::class) {
     from(android.sourceSets["main"].java.srcDirs)
     archiveClassifier.set("sourcesJar")
 }
 
-val localProps = Properties()
-val localProperties = File(rootProject.rootDir, "local.properties")
-if (localProperties.exists() && localProperties.isFile) {
-    localProperties.inputStream().use { localProps.load(it) }
-}
-
-project.extra["signing.keyId"] = localProps.getProperty("signing.keyId")
-project.extra["signing.secretKeyRingFile"] = localProps.getProperty("signing.secretKeyRingFile")
-project.extra["signing.password"] = localProps.getProperty("signing.password")
+project.ext["signing.keyId"] = System.getenv("SIGN_KEY_ID")
+project.ext["signing.secretKeyRingFile"] = System.getenv("SIGN_KEY")
+project.ext["signing.password"] = System.getenv("SIGN_KEY_PASS")
 
 afterEvaluate {
 
@@ -68,8 +73,8 @@ afterEvaluate {
                 name = MavenConf.MAVEN_NAME
                 url = uri(MavenConf.MAVEN_URL)
                 credentials {
-                    username = localProps.getProperty(MavenConf.OSSRH_USERNAME)
-                    password = localProps.getProperty(MavenConf.OSSRH_PASSWORD)
+                    username = System.getenv(MavenConf.OSS_USERNAME)
+                    password = System.getenv(MavenConf.OSS_PASSWORD)
                 }
             }
         }

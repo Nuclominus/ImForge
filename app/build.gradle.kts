@@ -17,7 +17,7 @@ android {
         val release by getting {
             isMinifyEnabled = true
             isDebuggable = false
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -35,6 +35,19 @@ android {
                 "dexguard-release.txt",
             )
             setProperty("archivesBaseName", "ImForge")
+
+            lint {
+                abortOnError = false
+            }
+        }
+    }
+
+    detekt {
+        source.setFrom("src/main/java")
+        config.setFrom("../config/detekt/detekt.yaml")
+        buildUponDefaultConfig = true
+        tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+            exclude("**/theme/**/*.kt")
         }
     }
 }

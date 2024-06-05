@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 }
 
 include(":app")
-include(":imagecompressor")
+include(":lib")
