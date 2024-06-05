@@ -30,12 +30,12 @@ or use version catalog:
 
 ```yaml
 
-[ versions ]
-  imforge = $last_version
+[versions]
+imforge = $last_version
 ...
-  [ libraries ]
+[libraries]
 ...
-  nuclominus-imforge = { group = "io.github.nuclominus", name = "imforge", version.ref = "imforge" }
+nuclominus-imforge = { group = "io.github.nuclominus", name = "imforge", version.ref = "imforge" }
 
 ```
 
