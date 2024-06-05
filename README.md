@@ -1,4 +1,7 @@
 # ImForge
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.nuclominus/imforge.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.nuclominus/imforge)
+[![Detekt scaning](https://github.com/Nuclominus/DiffEase/actions/workflows/pr_code_analyzing.yml/badge.svg)](https://github.com/Nuclominus/ImForge/actions/workflows/pr_code_analyzing.yml)
 
 ImForge library is a powerful tool designed to optimize and compress images in your Android
 applications.
