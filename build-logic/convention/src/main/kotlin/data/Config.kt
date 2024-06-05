@@ -12,7 +12,7 @@ object AndroidAppConf {
 }
 
 object LibConf {
-    const val LIB_VERSION: String = "1.0.2"
+    const val LIB_VERSION: String = "1.0.3"
     const val NAMESPACE: String = "io.github.nuclominus.imforge"
 }
 
