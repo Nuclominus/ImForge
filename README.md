@@ -53,9 +53,9 @@ You can configure the optimization process by using the `Configuration` class.
 ```kotlin
 val configuration = Configuration(
     compressFormat = Bitmap.CompressFormat.WEBP, // image format
-    quality = 80, // image quality
-    maxWidth = 1920f, // max image width
-    maxHeight = 1080f, // max image height
+    quality = 50, // image quality
+    maxWidth = 1280f, // max image width
+    maxHeight = 720f, // max image height
     minWidth = 640f, // min image width
     minHeight = 480f // min image height
 )
@@ -67,3 +67,4 @@ val optimizedImage = File("path/to/image").optimize(configuration)
 
 There are several examples of using the library. Also you can see the example app:
 
+<img src="./assets/1.png" alt="1.png" width="200"/> <img src="./assets/2.png" alt="2.png" width="200"/> <img src="./assets/3.png" alt="3.png" width="200"/> <img src="./assets/4.png" alt="4.png" width="200"/>
