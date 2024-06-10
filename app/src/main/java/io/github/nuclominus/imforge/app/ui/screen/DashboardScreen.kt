@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.nuclominus.imforge.app.ui.state.SideEffect
 import io.github.nuclominus.imforge.app.ui.viewmodel.DashboardViewModel
@@ -40,9 +39,10 @@ import java.lang.ref.WeakReference
 private const val LIST_SCROLL_OFFSET = 5
 
 @Composable
-fun DashboardScreen(navigateToDetails: (String) -> Unit) {
-
-    val viewModel: DashboardViewModel = hiltViewModel()
+fun DashboardScreen(
+    viewModel: DashboardViewModel,
+    navigateToDetails: (String) -> Unit
+) {
     val contextRef = WeakReference(LocalContext.current)
 
     var resolutionBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -149,6 +149,11 @@ fun DashboardScreen(navigateToDetails: (String) -> Unit) {
             when (sideEffect) {
                 is SideEffect.ScrollTo -> coroutineScope.launch {
                     listState.animateScrollToItem(sideEffect.position, LIST_SCROLL_OFFSET)
+                }
+
+                is SideEffect.ShowResolutionPicker -> {
+                    imageUri = sideEffect.uri
+                    resolutionBottomSheet = true
                 }
 
                 else -> Unit

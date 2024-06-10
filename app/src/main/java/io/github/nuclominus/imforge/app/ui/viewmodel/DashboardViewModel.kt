@@ -35,7 +35,7 @@ class DashboardViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _sideEffect = MutableSharedFlow<SideEffect?>(
-        replay = 1,
+        replay = 2,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val sideEffect: SharedFlow<SideEffect?> = _sideEffect
@@ -58,15 +58,15 @@ class DashboardViewModel @Inject constructor(
         optimizeImageUseCase(uri, _config.value)
     }
 
-    fun processData(intent: Intent?) {
+    fun processData(intent: Intent?) = viewModelScope.launch {
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent?.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
         } else {
             @Suppress("DEPRECATION")
             intent?.getParcelableExtra(Intent.EXTRA_STREAM)
-        } ?: return
+        } ?: return@launch
 
-        optimizeImage(uri)
+        _sideEffect.emit(SideEffect.ShowResolutionPicker(uri))
     }
 
     fun deleteCache() {
