@@ -71,7 +71,7 @@ internal fun DetailsTags(
     // Tag with image size
     Tag(title = "${image.width}x${image.height}")
     // Tag with compression percentage
-    Tag(title = if (isOriginal) "0%" else "${entity.compression}%")
+    Tag(title = if (isOriginal) "100%" else "${entity.compression}%")
     // Tag with compressed size
     Tag(title = (if (isOriginal) entity.originSize else entity.compressedSize).formatSize())
     // Tag with image mime type

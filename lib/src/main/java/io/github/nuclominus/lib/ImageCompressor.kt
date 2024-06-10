@@ -351,7 +351,12 @@ internal object ImageOptimizer {
  * @param minHeight the output image min height
  */
 data class Configuration(
-    val compressFormat: Bitmap.CompressFormat = @Suppress("DEPRECATION") Bitmap.CompressFormat.WEBP,
+    @Suppress("DEPRECATION")
+    val compressFormat: Bitmap.CompressFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        Bitmap.CompressFormat.WEBP_LOSSY
+    } else {
+        Bitmap.CompressFormat.WEBP
+    },
     val maxWidth: Float = Float.MAX_VALUE,
     val maxHeight: Float = Float.MAX_VALUE,
     val useMaxScale: Boolean = true,

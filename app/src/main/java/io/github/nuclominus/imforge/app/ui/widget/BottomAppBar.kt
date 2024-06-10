@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallFloatingActionButton
@@ -25,8 +26,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BottomAppBar(
-    countFiles: Int,
     galleryResult: ActivityResultLauncher<PickVisualMediaRequest>,
+    onOpenSettings: () -> Unit,
     onDeleteCache: () -> Unit,
 ) {
     var showDeleteDialog by remember {
@@ -39,10 +40,11 @@ fun BottomAppBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = "Total: $countFiles",
-                modifier = Modifier.padding(8.dp),
-            )
+            SmallFloatingActionButton(
+                onClick = onOpenSettings
+            ) {
+                Icon(imageVector = Icons.Outlined.Settings, contentDescription = "settings")
+            }
 
             FloatingActionButton(
                 onClick = {

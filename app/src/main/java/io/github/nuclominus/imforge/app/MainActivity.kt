@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -27,9 +26,7 @@ import io.github.nuclominus.imforge.app.ui.viewmodel.DashboardViewModel
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: DashboardViewModel by viewModels<DashboardViewModel> {
-        defaultViewModelProviderFactory
-    }
+    private val viewModel: DashboardViewModel by viewModels<DashboardViewModel>()
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -39,7 +36,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        viewModel.processData(intent)
 
         setContent {
             ImageCompressorTheme {
@@ -53,14 +49,20 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                Navigation(navController = navController)
+                Navigation(
+                    viewModel = viewModel,
+                    navController = navController
+                )
             }
         }
+
+        viewModel.processData(intent)
     }
 }
 
 @Composable
 fun Navigation(
+    viewModel: DashboardViewModel,
     navController: NavHostController
 ) {
     NavHost(
@@ -69,7 +71,7 @@ fun Navigation(
         startDestination = ImageOptimizingScreen.LIST.routeName,
     ) {
         composable(ImageOptimizingScreen.LIST.routeName) {
-            DashboardScreen {
+            DashboardScreen(viewModel) {
                 navController.navigate("${ImageOptimizingScreen.DETAILS.routeName}/${it}")
             }
         }
