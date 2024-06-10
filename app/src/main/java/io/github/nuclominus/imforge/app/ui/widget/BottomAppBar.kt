@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BottomAppBar(
-    countFiles: Int,
     galleryResult: ActivityResultLauncher<PickVisualMediaRequest>,
     onOpenSettings: () -> Unit,
     onDeleteCache: () -> Unit,

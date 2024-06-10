@@ -62,7 +62,7 @@ fun DashboardScreen(
     Scaffold(
         bottomBar = {
             BottomAppBar(
-                countFiles = imageDetails.size,
+//                countFiles = imageDetails.size,
                 galleryResult = galleryResult,
                 onDeleteCache = viewModel::deleteCache,
                 onOpenSettings = { settingsBottomSheet = true }

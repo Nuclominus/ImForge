@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 sealed class BitmapFormats(val format: Bitmap.CompressFormat) {
     data object Jpeg : BitmapFormats(Bitmap.CompressFormat.JPEG)
     data object Png : BitmapFormats(Bitmap.CompressFormat.PNG)
+    @Suppress("DEPRECATION")
     data object Webp : BitmapFormats(Bitmap.CompressFormat.WEBP)
 
     @RequiresApi(Build.VERSION_CODES.R)
