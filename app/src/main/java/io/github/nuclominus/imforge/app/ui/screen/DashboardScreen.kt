@@ -1,5 +1,6 @@
 package io.github.nuclominus.imforge.app.ui.screen
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +29,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.nuclominus.imforge.app.ui.state.SideEffect
 import io.github.nuclominus.imforge.app.ui.viewmodel.DashboardViewModel
 import io.github.nuclominus.imforge.app.ui.widget.BottomAppBar
+import io.github.nuclominus.imforge.app.ui.widget.BottomSheet
 import io.github.nuclominus.imforge.app.ui.widget.ImageListItem
+import io.github.nuclominus.imforge.app.ui.widget.ResolutionWidget
+import io.github.nuclominus.imforge.app.ui.widget.SettingsWidget
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
@@ -37,23 +44,28 @@ fun DashboardScreen(navigateToDetails: (String) -> Unit) {
 
     val viewModel: DashboardViewModel = hiltViewModel()
     val contextRef = WeakReference(LocalContext.current)
+
+    var resolutionBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var imageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
     val galleryResult =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            contextRef.get()?.let {
-                viewModel.optimizeImage(uri)
-            }
+            imageUri = uri
+            resolutionBottomSheet = true
         }
 
     val imageDetails by viewModel.details.collectAsStateWithLifecycle(emptyList())
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    var settingsBottomSheet by rememberSaveable { mutableStateOf(false) }
+    val settings by viewModel.config.collectAsStateWithLifecycle()
 
     Scaffold(
         bottomBar = {
             BottomAppBar(
                 countFiles = imageDetails.size,
                 galleryResult = galleryResult,
-                onDeleteCache = viewModel::deleteCache
+                onDeleteCache = viewModel::deleteCache,
+                onOpenSettings = { settingsBottomSheet = true }
             )
         }
     ) { paddingValues ->
@@ -82,6 +94,52 @@ fun DashboardScreen(navigateToDetails: (String) -> Unit) {
                     modifier = Modifier.align(Alignment.Center),
                     text = "Press + to add image for compressing"
                 )
+            }
+
+            if (settingsBottomSheet) {
+                BottomSheet(
+                    onDismiss = { settingsBottomSheet = false }
+                ) {
+                    SettingsWidget(
+                        configuration = settings,
+                        onConfigurationChange = {
+                            viewModel.setConfig(it)
+                            settingsBottomSheet = false
+                        }
+                    )
+                }
+            }
+
+            if (resolutionBottomSheet) {
+                imageUri?.let { uri ->
+
+
+                    BottomSheet(
+                        onDismiss = { resolutionBottomSheet = false }
+                    ) {
+                        val baseResolution = viewModel.getImageResolution(
+                            context = contextRef.get(),
+                            uri = uri
+                        ).getOrNull() ?: run {
+                            resolutionBottomSheet = false
+                            return@BottomSheet
+                        }
+
+                        ResolutionWidget(
+                            baseResolution = baseResolution,
+                            onSelectedResolution = { resolution ->
+                                viewModel.setConfig(
+                                    settings.copy(
+                                        maxWidth = resolution.first.toFloat(),
+                                        maxHeight = resolution.second.toFloat(),
+                                    )
+                                )
+                                viewModel.optimizeImage(imageUri)
+                                resolutionBottomSheet = false
+                            }
+                        )
+                    }
+                }
             }
         }
     }

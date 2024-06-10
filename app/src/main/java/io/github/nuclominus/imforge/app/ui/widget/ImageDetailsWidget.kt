@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,8 +45,7 @@ fun ImageDetailsWidget(
             .then(modifier)
     ) {
         Image(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             bitmap = imageBitmap,
             contentDescription = "Image ${details.id}",
             contentScale = ContentScale.Crop,
@@ -53,9 +53,10 @@ fun ImageDetailsWidget(
 
         FlowRow(
             modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(8.dp)
+                .align(Alignment.TopEnd),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             tags(imageBitmap)
         }
