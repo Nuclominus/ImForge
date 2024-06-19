@@ -16,6 +16,8 @@ internal fun Project.configureAndroidApplication() =
 
 
         defaultConfig {
+            targetSdk = AndroidAppConf.COMPILE_SDK
+
             versionName = AndroidAppConf.APP_VERSION
             versionCode = AndroidAppConf.VERSION_CODE
             namespace = AndroidAppConf.NAMESPACE
