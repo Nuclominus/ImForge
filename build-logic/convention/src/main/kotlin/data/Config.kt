@@ -4,7 +4,7 @@ import org.gradle.api.JavaVersion
 
 object AndroidAppConf {
     const val APP_VERSION: String = "1.0.1"
-    const val VERSION_CODE: Int = 2
+    const val VERSION_CODE: Int = 5
     const val NAMESPACE: String = "io.github.nuclominus.imforge.app"
     const val COMPILE_SDK: Int = 34
     const val MIN_SDK: Int = 26

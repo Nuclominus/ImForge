@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ImageCompressor</string>
+    <string name="app_name">ImForge</string>
     <string name="quality">Quality</string>
     <string name="settings">Settings</string>
     <string name="select_format">Select format</string>
