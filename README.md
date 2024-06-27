@@ -68,6 +68,6 @@ val optimizedImage = File("path/to/image").optimize(configuration)
 
 ### Example
 
-There are several examples of using the library. Also you can see the example app:
+There are several examples of using the library. Also you can install the example app from [play store](https://play.google.com/store/apps/details?id=io.github.nuclominus.imforge.app) or build by your own:
 
 <img src="./assets/1.png" alt="1.png" width="200"/> <img src="./assets/2.png" alt="2.png" width="200"/> <img src="./assets/3.png" alt="3.png" width="200"/> <img src="./assets/4.png" alt="4.png" width="200"/>
