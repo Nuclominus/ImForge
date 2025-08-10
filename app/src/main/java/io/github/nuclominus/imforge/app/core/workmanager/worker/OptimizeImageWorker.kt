@@ -11,8 +11,8 @@ import io.github.nuclominus.imforge.app.core.database.AppDataBase
 import io.github.nuclominus.imforge.app.core.notification.NotificationManager.createForegroundInfo
 import io.github.nuclominus.imforge.app.ext.buildResultFailureWith
 import io.github.nuclominus.imforge.app.ext.toObject
-import io.github.nuclominus.imagecompressor.ImageOptimizer
-import io.github.nuclominus.imagecompressor.ext.optimize
+import io.github.nuclominus.lib.Configuration
+import io.github.nuclominus.lib.ext.optimize
 import java.io.File
 
 @HiltWorker
@@ -29,7 +29,7 @@ class OptimizeImageWorker @AssistedInject constructor(
         setForeground(applicationContext.createForegroundInfo(originalEntityId))
 
         val config = inputData.getString(WorkerConstants.KEY_COMPRESSING_CONFIG)
-            ?.toObject<ImageOptimizer.Configuration>()
+            ?.toObject<Configuration>()
             ?: return buildResultFailureWith("Configuration is empty")
 
         val entity = imageDetailsDao().getById(originalEntityId)

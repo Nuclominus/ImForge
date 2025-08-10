@@ -11,5 +11,5 @@ data class OptimizedImageModel(
         parentColumn = "config_id",
         entityColumn = "id"
     )
-    val config: ConfigurationEntity,
+    val config: ConfigurationEntity?,
 )

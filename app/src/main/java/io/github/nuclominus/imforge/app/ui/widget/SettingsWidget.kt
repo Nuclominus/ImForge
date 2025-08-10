@@ -26,10 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.nuclominus.imagecompressor.ImageOptimizer
 import io.github.nuclominus.imforge.app.R
 import io.github.nuclominus.imforge.app.ui.theme.Typography
 import io.github.nuclominus.imforge.app.ui.util.BitmapFormats
+import io.github.nuclominus.lib.Configuration
 
 @Preview(
     showBackground = true,
@@ -37,8 +37,8 @@ import io.github.nuclominus.imforge.app.ui.util.BitmapFormats
 )
 @Composable
 internal fun SettingsWidget(
-    configuration: ImageOptimizer.Configuration = ImageOptimizer.Configuration(),
-    onConfigurationChange: (ImageOptimizer.Configuration) -> Unit = {}
+    configuration: Configuration = Configuration(),
+    onConfigurationChange: (Configuration) -> Unit = {}
 ) {
     var format by remember { mutableStateOf(configuration.compressFormat) }
     var quality by remember { mutableIntStateOf(configuration.quality) }

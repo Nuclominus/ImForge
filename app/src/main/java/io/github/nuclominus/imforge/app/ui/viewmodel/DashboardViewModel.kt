@@ -8,13 +8,13 @@ import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.nuclominus.imagecompressor.ImageOptimizer
 import io.github.nuclominus.imforge.app.core.database.entity.ImageDetailsEntity
 import io.github.nuclominus.imforge.app.core.usecase.DeleteImageCacheUseCase
 import io.github.nuclominus.imforge.app.core.usecase.GetImageListUseCase
 import io.github.nuclominus.imforge.app.core.usecase.OptimizeImageUseCase
 import io.github.nuclominus.imforge.app.ui.state.SideEffect
 import io.github.nuclominus.imforge.app.ui.widget.Resolution
+import io.github.nuclominus.lib.Configuration
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -47,10 +47,10 @@ class DashboardViewModel @Inject constructor(
             _sideEffect.emit(SideEffect.ScrollTo(0))
         }
 
-    private val _config = MutableStateFlow(ImageOptimizer.Configuration())
-    val config: StateFlow<ImageOptimizer.Configuration> = _config.asStateFlow()
+    private val _config = MutableStateFlow(Configuration())
+    val config: StateFlow<Configuration> = _config.asStateFlow()
 
-    fun setConfig(config: ImageOptimizer.Configuration) = viewModelScope.launch {
+    fun setConfig(config: Configuration) = viewModelScope.launch {
         _config.emit(config)
     }
 

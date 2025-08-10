@@ -4,9 +4,9 @@ import org.gradle.api.JavaVersion
 
 object AndroidAppConf {
     const val APP_VERSION: String = "1.0.2"
-    const val VERSION_CODE: Int = 6
+    const val VERSION_CODE: Int = 7
     const val NAMESPACE: String = "io.github.nuclominus.imforge.app"
-    const val COMPILE_SDK: Int = 34
+    const val COMPILE_SDK: Int = 36
     const val MIN_SDK: Int = 26
     val javaVersion: JavaVersion = JavaVersion.VERSION_19
 }
@@ -19,7 +19,6 @@ object LibConf {
 object MavenConf {
     const val GROUP_ID: String = "io.github.nuclominus"
     const val ARTIFACT_ID: String = "imforge"
-    const val LIB_VERSION: String = LibConf.LIB_VERSION
     const val ARTIFACT_NAME: String = "ImForge"
     const val DESCRIPTION: String = "A bitmap optimizer with supporting popular formats"
     const val URL: String = "https://github.com/Nuclominus/ImForge"
