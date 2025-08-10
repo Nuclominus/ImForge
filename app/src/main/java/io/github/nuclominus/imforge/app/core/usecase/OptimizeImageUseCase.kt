@@ -10,13 +10,13 @@ import io.github.nuclominus.imforge.app.WorkerConstants
 import io.github.nuclominus.imforge.app.core.workmanager.worker.CreateThumbnailWorker
 import io.github.nuclominus.imforge.app.core.workmanager.worker.OptimizeImageWorker
 import io.github.nuclominus.imforge.app.ext.toJson
-import io.github.nuclominus.imagecompressor.ImageOptimizer
+import io.github.nuclominus.lib.Configuration
 import java.util.UUID
 import javax.inject.Inject
 
 class OptimizeImageUseCase @Inject constructor(private val workManager: WorkManager) {
 
-    operator fun invoke(uri: Uri?, config: ImageOptimizer.Configuration) {
+    operator fun invoke(uri: Uri?, config: Configuration) {
 
         val uuid = UUID.randomUUID()
 

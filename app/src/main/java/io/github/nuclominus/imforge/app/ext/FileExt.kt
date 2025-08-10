@@ -8,17 +8,16 @@ import android.os.Build
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
 import io.github.nuclominus.imforge.app.FileConstants
-import io.github.nuclominus.imagecompressor.ImageOptimizer
-import io.github.nuclominus.imagecompressor.ext.optimize
+import io.github.nuclominus.lib.Configuration
+import io.github.nuclominus.lib.ext.optimize
 import java.io.File
-import java.util.Locale
 import kotlin.math.log10
 import kotlin.math.pow
 
 internal fun Context.createThumbnail(original: File): File {
     val thumb = original.optimize(
         context = this,
-        configuration = ImageOptimizer.Configuration(
+        configuration = Configuration(
             compressFormat = Bitmap.CompressFormat.JPEG,
             quality = 10,
         )

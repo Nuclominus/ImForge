@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetWorkInfoUseCase @Inject constructor(
     private val workManager: WorkManager
 ) {
-    operator fun invoke(uuid: UUID): LiveData<WorkInfo> {
+    operator fun invoke(uuid: UUID): LiveData<WorkInfo?> {
         return workManager.getWorkInfoByIdLiveData(uuid)
     }
 }

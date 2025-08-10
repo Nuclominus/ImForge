@@ -78,7 +78,7 @@ internal fun DetailsTags(
     if (isOriginal) {
         Tag(title = entity.mimeType.uppercase())
     } else {
-        model.config.compressFormat.toBitmapCompressFormat()
+        model.config?.compressFormat?.toBitmapCompressFormat()
             ?.let { format ->
                 Tag(title = format.name)
             }

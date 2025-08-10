@@ -25,7 +25,7 @@ internal fun Project.configureKotlin() {
                 freeCompilerArgs.get() + listOf(
                     "-opt-in=kotlin.RequiresOptIn",
                     "-Xjvm-default=all-compatibility",
-                    "-Xcontext-receivers",
+                    "-Xcontext-parameters",
                 ) + buildComposeMetricsParameters()
             )
 

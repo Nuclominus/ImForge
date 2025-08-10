@@ -13,6 +13,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
+import androidx.core.graphics.scale
 
 private const val DEFAULT_QUALITY = 90
 
@@ -301,7 +302,7 @@ internal object ImageOptimizer {
         shouldScaleUp: Boolean
     ): Bitmap {
         val scaledBitmap: Bitmap = if (scaleUpFactor > 1 || shouldScaleUp) {
-            Bitmap.createScaledBitmap(bitmap, finalWidth, finalHeight, true)
+            bitmap.scale(finalWidth, finalHeight)
         } else {
             bitmap
         }
