@@ -49,6 +49,7 @@ internal fun Project.configureAndroidApplication() =
             addBundle(versionCatalog(), "hilt")
             addLibrary(versionCatalog(), "hilt-compiler", Configurations.Ksp)
             addLibrary(versionCatalog(), "hilt-android-compiler", Configurations.Ksp)
+            addLibrary(versionCatalog(), "hilt-android-testing", Configurations.TestImplementation)
 
             // Room
             addLibrary(versionCatalog(), "androidx-room")

@@ -38,25 +38,32 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            ImageCompressorTheme {
-                val navController = rememberNavController()
-
-                BackHandler(true) {
-                    if (navController.backQueue.size <= 1) {
-                        finish()
-                    } else {
-                        navController.popBackStack()
-                    }
-                }
-
-                Navigation(
-                    viewModel = viewModel,
-                    navController = navController
-                )
-            }
+            App(viewModel, ::finish)
         }
 
         viewModel.processData(intent)
+    }
+
+
+}
+
+@Composable
+fun App(viewModel: DashboardViewModel, onBackPressed: () -> Unit) {
+    ImageCompressorTheme {
+        val navController = rememberNavController()
+
+        BackHandler(true) {
+            if (navController.backQueue.size <= 1) {
+                onBackPressed()
+            } else {
+                navController.popBackStack()
+            }
+        }
+
+        Navigation(
+            viewModel = viewModel,
+            navController = navController
+        )
     }
 }
 

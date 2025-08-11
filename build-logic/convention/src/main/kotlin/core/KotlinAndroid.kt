@@ -12,7 +12,6 @@ import java.io.File
 /**
  * Configure base Kotlin with Android options
  */
-// TODO: Migration 2.0
 internal fun Project.configureKotlin() {
     configure<KotlinAndroidProjectExtension> {
         compilerOptions {
