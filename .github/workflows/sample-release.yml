@@ -1,0 +1,77 @@
+name: Android Release Build
+
+on:
+  # Manual run from the Actions tab
+  workflow_dispatch:
+    inputs:
+      run_tests:
+        description: "Run unit tests before building"
+        default: true
+        type: boolean
+  # Build and publish Release when pushing a semver-like tag
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write  # needed to create GitHub Releases on tag pushes
+
+concurrency:
+  group: android-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "19"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Gradle cache and wrapper validation
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Assemble Release
+        run: ./gradlew clean assembleRelease --stacktrace
+
+      - name: Upload AARs
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aars-${{ github.run_number }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            **/build/outputs/aar/*.aar
+
+      - name: Upload Proguard/R8 mapping files
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-mappings-${{ github.run_number }}
+          if-no-files-found: ignore
+          retention-days: 14
+          path: |
+            **/build/outputs/mapping/release/mapping.txt
+
+      - name: Create GitHub Release (on tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            **/build/outputs/aar/*.aar
+            **/build/outputs/mapping/release/mapping.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
