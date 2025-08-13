@@ -7,13 +7,13 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RestrictTo
+import androidx.core.graphics.scale
 import androidx.exifinterface.media.ExifInterface
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
-import androidx.core.graphics.scale
 
 private const val DEFAULT_QUALITY = 90
 
@@ -123,8 +123,7 @@ internal object ImageOptimizer {
          */
         val imageFilePath: String = compressAndSaveImage(
             bitmap = finalBitmap,
-            compressFormat = configuration.compressFormat,
-            quality = configuration.quality
+            configuration = configuration
         ) ?: return null
 
         return File(imageFilePath)
@@ -314,9 +313,13 @@ internal object ImageOptimizer {
 
     private fun compressAndSaveImage(
         bitmap: Bitmap,
-        compressFormat: Bitmap.CompressFormat,
-        quality: Int,
+        configuration: Configuration
     ): String? {
+        val fileName = configuration.fileName
+        val fileDirectory = configuration.fileDirectory
+        val compressFormat = configuration.compressFormat
+        val quality = configuration.quality
+
         @Suppress("DEPRECATION")
         val suffix = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             when (compressFormat) {
@@ -333,7 +336,7 @@ internal object ImageOptimizer {
                 else -> ".jpg"
             }
         }
-        val imageFile = File.createTempFile("image", suffix)
+        val imageFile = File.createTempFile(fileName, suffix, fileDirectory)
         val stream = FileOutputStream(imageFile)
         bitmap.compress(compressFormat, quality, stream)
         stream.close()
@@ -352,6 +355,8 @@ internal object ImageOptimizer {
  * @param minHeight the output image min height
  */
 data class Configuration(
+    val fileName: String = "image",
+    val fileDirectory: File? = null,
     @Suppress("DEPRECATION")
     val compressFormat: Bitmap.CompressFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         Bitmap.CompressFormat.WEBP_LOSSY
