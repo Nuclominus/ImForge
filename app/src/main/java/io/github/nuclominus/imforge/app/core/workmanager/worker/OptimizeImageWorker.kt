@@ -40,7 +40,7 @@ class OptimizeImageWorker @AssistedInject constructor(
 
             val directory = File(applicationContext.cacheDir, "compressed")
             if (!directory.exists()) {
-                directory.mkdir()
+                directory.mkdirs()
             }
 
             val compressedFile = originalFile.optimize(
