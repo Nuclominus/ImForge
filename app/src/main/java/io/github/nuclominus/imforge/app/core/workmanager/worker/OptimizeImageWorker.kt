@@ -14,6 +14,7 @@ import io.github.nuclominus.imforge.app.ext.toObject
 import io.github.nuclominus.lib.Configuration
 import io.github.nuclominus.lib.ext.optimize
 import java.io.File
+import java.util.UUID
 
 @HiltWorker
 class OptimizeImageWorker @AssistedInject constructor(
@@ -37,9 +38,17 @@ class OptimizeImageWorker @AssistedInject constructor(
         runCatching {
             val originalFile = File(entity.originalPath)
 
+            val directory = File(applicationContext.cacheDir, "compressed")
+            if (!directory.exists()) {
+                directory.mkdir()
+            }
+
             val compressedFile = originalFile.optimize(
                 context = applicationContext,
-                configuration = config
+                configuration = config.copy(
+                    fileName = "test_image" + UUID.randomUUID().toString(),
+                    fileDirectory = directory
+                )
             )
 
             val updatedEntity = entity.copy(
