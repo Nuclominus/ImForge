@@ -3,7 +3,7 @@ package data
 import org.gradle.api.JavaVersion
 
 object AndroidAppConf {
-    const val APP_VERSION: String = "1.0.3"
+    const val APP_VERSION: String = "1.0.4"
     const val VERSION_CODE: Int = 7
     const val NAMESPACE: String = "io.github.nuclominus.imforge.app"
     const val COMPILE_SDK: Int = 36
@@ -12,7 +12,7 @@ object AndroidAppConf {
 }
 
 object LibConf {
-    const val LIB_VERSION: String = "1.0.4"
+    const val LIB_VERSION: String = "1.0.5"
     const val NAMESPACE: String = "io.github.nuclominus.imforge"
 }
 
