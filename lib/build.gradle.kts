@@ -3,7 +3,7 @@ import data.MavenConf
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("io.nuclominus.android.library")
+    alias(libs.plugins.nuclominus.library)
     alias(libs.plugins.detekt.analyzer)
     `maven-publish`
     signing

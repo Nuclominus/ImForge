@@ -82,3 +82,5 @@ hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+nuclominus-application = { id = "io.nuclominus.android.application", version = "unspecified" }
+nuclominus-library = { id = "io.nuclominus.android.library", version = "unspecified" }

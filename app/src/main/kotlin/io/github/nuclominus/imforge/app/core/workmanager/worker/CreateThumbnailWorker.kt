@@ -17,9 +17,10 @@ import io.github.nuclominus.imforge.app.ext.buildResultFailureWith
 import io.github.nuclominus.imforge.app.ext.copyFile
 import io.github.nuclominus.imforge.app.ext.createThumbnail
 import io.github.nuclominus.imforge.app.ext.toObject
-import io.github.nuclominus.imagecompressor.ImageOptimizer
 import java.io.File
 import java.util.UUID
+import androidx.core.net.toUri
+import io.github.nuclominus.lib.Configuration
 
 @HiltWorker
 class CreateThumbnailWorker @AssistedInject constructor(
@@ -32,7 +33,7 @@ class CreateThumbnailWorker @AssistedInject constructor(
         val uuid: String = inputData.getString(WorkerConstants.KEY_ENTITY_ID)
             ?: return buildResultFailureWith("Uri is empty")
 
-        val uri: Uri = Uri.parse(inputData.getString(WorkerConstants.KEY_CONTENT_URI))
+        val uri: Uri = inputData.getString(WorkerConstants.KEY_CONTENT_URI)?.toUri()
             ?: return buildResultFailureWith("Uri is empty")
 
         // Copy original image to cache directory
@@ -41,7 +42,7 @@ class CreateThumbnailWorker @AssistedInject constructor(
 
         // Get compressing configuration
         val config = inputData.getString(WorkerConstants.KEY_COMPRESSING_CONFIG)
-            ?.toObject<ImageOptimizer.Configuration>()
+            ?.toObject<Configuration>()
             ?: return buildResultFailureWith("Configuration is empty")
 
         // Save compressing configuration
@@ -66,7 +67,7 @@ class CreateThumbnailWorker @AssistedInject constructor(
         )
     }
 
-    context(AppDataBase)
+    context(appData: AppDataBase)
     private fun createImageEntity(
         uuid: String,
         file: File,
@@ -96,13 +97,13 @@ class CreateThumbnailWorker @AssistedInject constructor(
             configurationId = configuration.id,
         )
 
-        imageDetailsDao().insertOrReplace(entity)
+        appData.imageDetailsDao().insertOrReplace(entity)
 
         return entity
     }
 
-    context(AppDataBase)
-    private fun saveConfiguration(config: ImageOptimizer.Configuration): ConfigurationEntity {
+    context(appData: AppDataBase)
+    private fun saveConfiguration(config: Configuration): ConfigurationEntity {
         val configEntity = ConfigurationEntity(
             id = UUID.randomUUID().toString(),
             compressFormat = config.compressFormat.ordinal,
@@ -114,7 +115,7 @@ class CreateThumbnailWorker @AssistedInject constructor(
             minHeight = config.minHeight
         )
 
-        configurationDao().insert(configEntity)
+        appData.configurationDao().insert(configEntity)
         return configEntity
     }
 
