@@ -1,8 +1,8 @@
 [versions]
 activity-compose = "1.10.1"
-agp = "8.12.0"
-compose-bom = "2025.07.00"
-core-ktx = "1.16.0"
+agp = "8.12.1"
+compose-bom = "2025.08.00"
+core-ktx = "1.17.0"
 detektAnalyzer = "1.23.8"
 exifInterface = "1.4.1"
 imforge = "1.0.4"
@@ -10,7 +10,7 @@ kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"
 #noinspection GradleDependency
 lifecycle = "2.7.0" #TODO update to 2.8.+ when fixed problem in compose
-composeState = "1.8.3"
+composeState = "1.9.0"
 hilt = "2.57"
 androidxHilt = "1.2.0"
 multidex = "2.0.1"

@@ -56,5 +56,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.nuclominus.imforge)
+//    implementation(libs.nuclominus.imforge)
+    implementation(project(":lib"))
 }

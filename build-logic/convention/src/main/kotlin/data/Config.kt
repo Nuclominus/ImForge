@@ -12,7 +12,7 @@ object AndroidAppConf {
 }
 
 object LibConf {
-    const val LIB_VERSION: String = "1.0.5"
+    const val LIB_VERSION: String = "1.0.6"
     const val NAMESPACE: String = "io.github.nuclominus.imforge"
 }
 
@@ -23,14 +23,12 @@ object MavenConf {
     const val DESCRIPTION: String = "A bitmap optimizer with supporting popular formats"
     const val URL: String = "https://github.com/Nuclominus/ImForge"
     const val LICENSE_NAME: String = "The MIT License"
+    const val LICENSE_URL: String = "https://github.com/Nuclominus/ImForge?tab=MIT-1-ov-file"
     const val DEVELOPER_ID: String = "Nuclominus"
     const val DEVELOPER_NAME: String = "Roman Kosko"
     const val DEVELOPER_EMAIL: String = "9DGRoman@gmail.com"
     const val SCM_URL: String = "https://github.com/Nuclominus/ImForge"
-    const val MAVEN_NAME: String = "sonatypeStaging"
-    const val MAVEN_URL: String = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-    const val OSS_USERNAME: String = "OSS_USERNAME"
-    const val OSS_PASSWORD: String = "OSS_PASSWORD"
+    const val MAVEN_URL: String = "https://central.sonatype.com/api/v1/publisher"
 }
 
 
