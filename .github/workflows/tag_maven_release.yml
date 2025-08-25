@@ -16,10 +16,11 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: Build and publish with Gradle
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          arguments: --no-daemon -i jreleaserConfig build test publish
+
+      - name: Build and publish with Gradle
+        run: ./gradlew --no-daemon -i jreleaserConfig build test publish
         env:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
@@ -29,9 +30,7 @@ jobs:
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
 
       - name: Release with gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          arguments: --no-daemon -i jreleaserFullRelease
+        run: ./gradlew --no-daemon -i jreleaserFullRelease
         env:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
